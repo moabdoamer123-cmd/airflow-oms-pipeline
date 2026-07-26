@@ -22,6 +22,13 @@ Business Aggregations  →  Email Notifications (on failure)
 Airflow UI / Logs
 ```
 
+---
+
+## 📊 Project Presentation
+You can view the detailed slides and business logic overview of this pipeline architecture in the [OMS_Pipeline_Presentation.pptx](./OMS_Pipeline_Presentation.pptx) file.
+
+---
+
 ## Tech Stack
 
 | Layer | Tool |
