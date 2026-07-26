@@ -1,0 +1,354 @@
+OMS DATA EDA REPORT
+Schema: oms_core
+Tables: customers, dates, employees, orderitems, orders, products, stores, suppliers
+
+######################################################################
+# FULL SCHEMA (information_schema.columns)
+######################################################################
+    table_name    column_name                    data_type is_nullable  character_maximum_length
+0    customers     customerid            character varying          NO                      10.0
+1    customers      firstname            character varying         YES                      50.0
+2    customers       lastname            character varying         YES                      50.0
+3    customers          email            character varying         YES                     100.0
+4    customers          phone            character varying         YES                      50.0
+5    customers        address            character varying         YES                     100.0
+6    customers           city            character varying         YES                      50.0
+7    customers          state            character varying         YES                       2.0
+8    customers        zipcode            character varying         YES                      10.0
+9    customers     updated_at  timestamp without time zone         YES                       NaN
+10       dates           date                         date          NO                       NaN
+11       dates            day                      integer         YES                       NaN
+12       dates          month                      integer         YES                       NaN
+13       dates           year                      integer         YES                       NaN
+14       dates        quarter                      integer         YES                       NaN
+15       dates      dayofweek            character varying         YES                      20.0
+16       dates     weekofyear                      integer         YES                       NaN
+17       dates     updated_at  timestamp without time zone         YES                       NaN
+18   employees     employeeid                      integer          NO                       NaN
+19   employees      firstname            character varying         YES                      50.0
+20   employees       lastname            character varying         YES                      50.0
+21   employees          email            character varying         YES                     100.0
+22   employees       jobtitle            character varying         YES                      50.0
+23   employees       hiredate                         date         YES                       NaN
+24   employees      managerid                      integer         YES                       NaN
+25   employees        address            character varying         YES                     100.0
+26   employees           city            character varying         YES                      50.0
+27   employees          state            character varying         YES                       2.0
+28   employees        zipcode            character varying         YES                      10.0
+29   employees     updated_at  timestamp without time zone         YES                       NaN
+30  orderitems        orderid                      integer          NO                       NaN
+31  orderitems    orderitemid                      integer          NO                       NaN
+32  orderitems      productid                      integer         YES                       NaN
+33  orderitems       quantity                      integer         YES                       NaN
+34  orderitems      unitprice                      numeric         YES                       NaN
+35  orderitems     updated_at  timestamp without time zone         YES                       NaN
+36      orders        orderid                      integer          NO                       NaN
+37      orders      orderdate                         date         YES                       NaN
+38      orders     customerid            character varying         YES                      10.0
+39      orders     employeeid                      integer         YES                       NaN
+40      orders        storeid            character varying         YES                      10.0
+41      orders         status            character varying         YES                       2.0
+42      orders     updated_at  timestamp without time zone         YES                       NaN
+43    products      productid                      integer          NO                       NaN
+44    products           name            character varying         YES                     100.0
+45    products       category            character varying         YES                      50.0
+46    products    retailprice                      integer         YES                       NaN
+47    products  supplierprice                      integer         YES                       NaN
+48    products     supplierid                      integer         YES                       NaN
+49    products     updated_at  timestamp without time zone         YES                       NaN
+50      stores        storeid            character varying          NO                      10.0
+51      stores      storename            character varying         YES                      50.0
+52      stores        address            character varying         YES                     100.0
+53      stores           city            character varying         YES                      50.0
+54      stores          state            character varying         YES                      10.0
+55      stores        zipcode            character varying         YES                      20.0
+56      stores          email            character varying         YES                     100.0
+57      stores          phone            character varying         YES                      30.0
+58      stores     updated_at  timestamp without time zone         YES                       NaN
+59   suppliers     supplierid                      integer          NO                       NaN
+60   suppliers   suppliername            character varying         YES                     100.0
+61   suppliers  contactperson            character varying         YES                     100.0
+62   suppliers          email            character varying         YES                     100.0
+63   suppliers          phone            character varying         YES                      30.0
+64   suppliers        address            character varying         YES                     100.0
+65   suppliers           city            character varying         YES                      50.0
+66   suppliers          state            character varying         YES                      10.0
+67   suppliers        zipcode            character varying         YES                      20.0
+68   suppliers     updated_at  timestamp without time zone         YES                       NaN
+
+======================================================================
+TABLE: customers   (100 rows, 10 columns)
+======================================================================
+
+-- Column dtypes (pandas) --
+customerid               str
+firstname                str
+lastname                 str
+email                    str
+phone                    str
+address                  str
+city                     str
+state                    str
+zipcode                  str
+updated_at    datetime64[us]
+
+-- Null counts --
+No nulls in any column. ✅
+
+-- Duplicate rows: 0 --
+
+-- Sample rows (first 3) --
+  customerid firstname   lastname                        email                 phone                          address     city state zipcode          updated_at
+0      28222   Timothy      Perez    timothy.perez@outlook.com  +1-406-250-9199x4380                   8335 Mark Lock  Houston    TX   77001 2025-06-14 18:29:55
+1      22119   Melanie  Carpenter  melanie.carpenter@yahoo.com    406.967.3245x30245        258 Burns Brook Suite 328  Houston    TX   77001 2025-06-30 01:02:26
+2      23811    Robert    Nichols   robert.nichols@outlook.com            7768053632  17280 Parsons Islands Suite 593  Chicago    IL   60601 2025-06-07 03:40:41
+
+-- Categorical / text column breakdown --
+  customerid: 100 unique values (sample: ['28222', '22119', '23811'])
+  firstname: 81 unique values (sample: ['Timothy', 'Melanie', 'Robert'])
+  lastname: 86 unique values (sample: ['Perez', 'Carpenter', 'Nichols'])
+  email: 100 unique values (sample: ['timothy.perez@outlook.com', 'melanie.carpenter@yahoo.com', 'robert.nichols@outlook.com'])
+  phone: 100 unique values (sample: ['+1-406-250-9199x4380', '406.967.3245x30245', '7768053632'])
+  address: 100 unique values (sample: ['8335 Mark Lock', '258 Burns Brook Suite 328', '17280 Parsons Islands Suite 593'])
+  city: 5 unique -> ['Chicago', 'Houston', 'Los Angeles', 'New York', 'Phoenix']
+  state: 5 unique -> ['AZ', 'CA', 'IL', 'NY', 'TX']
+  zipcode: 5 unique -> ['10001', '60601', '77001', '85001', '90001']
+
+======================================================================
+TABLE: dates   (365 rows, 8 columns)
+======================================================================
+
+-- Column dtypes (pandas) --
+date                  object
+day                    int64
+month                  int64
+year                   int64
+quarter                int64
+dayofweek                str
+weekofyear             int64
+updated_at    datetime64[us]
+
+-- Null counts --
+No nulls in any column. ✅
+
+-- Duplicate rows: 0 --
+
+-- Sample rows (first 3) --
+         date  day  month  year  quarter  dayofweek  weekofyear          updated_at
+0  2025-01-01    1      1  2025        1  Wednesday           1 2025-07-03 01:16:53
+1  2025-01-02    2      1  2025        1   Thursday           1 2025-07-03 01:16:53
+2  2025-01-03    3      1  2025        1     Friday           1 2025-07-03 01:16:53
+
+-- Categorical / text column breakdown --
+  date: 365 unique values (sample: [datetime.date(2025, 1, 1), datetime.date(2025, 1, 2), datetime.date(2025, 1, 3)])
+  dayofweek: 7 unique -> ['Friday', 'Monday', 'Saturday', 'Sunday', 'Thursday', 'Tuesday', 'Wednesday']
+
+======================================================================
+TABLE: employees   (101 rows, 12 columns)
+======================================================================
+
+-- Column dtypes (pandas) --
+employeeid             int64
+firstname                str
+lastname                 str
+email                    str
+jobtitle                 str
+hiredate              object
+managerid            float64
+address                  str
+city                     str
+state                    str
+zipcode                  str
+updated_at    datetime64[us]
+
+-- Null counts --
+managerid    1
+
+-- Duplicate rows: 0 --
+
+-- Sample rows (first 3) --
+   employeeid firstname lastname                          email       jobtitle    hiredate  managerid              address      city state zipcode                 updated_at
+0      503454      Juan   Taylor      juan.taylor@sleekmart.com            CEO  2021-03-20        NaN     52869 Levy Coves  New York    NY   10001 2025-07-03 01:18:10.494810
+1      500647   Melissa  Salinas  melissa.salinas@sleekmart.com  Store Manager  2023-01-25   503454.0    561 Thomas Square  New York    NY   10001 2025-07-03 01:18:10.494810
+2      507242      Mark      Lee         mark.lee@sleekmart.com  Store Manager  2021-03-07   503454.0  05344 Tamara Garden   Chicago    IL   60601 2025-07-03 01:18:10.494810
+
+-- Categorical / text column breakdown --
+  firstname: 87 unique values (sample: ['Juan', 'Melissa', 'Mark'])
+  lastname: 89 unique values (sample: ['Taylor', 'Salinas', 'Lee'])
+  email: 101 unique values (sample: ['juan.taylor@sleekmart.com', 'melissa.salinas@sleekmart.com', 'mark.lee@sleekmart.com'])
+  jobtitle: 3 unique -> ['CEO', 'Sales Associate', 'Store Manager']
+  hiredate: 98 unique values (sample: [datetime.date(2021, 3, 20), datetime.date(2023, 1, 25), datetime.date(2021, 3, 7)])
+  address: 101 unique values (sample: ['52869 Levy Coves', '561 Thomas Square', '05344 Tamara Garden'])
+  city: 5 unique -> ['Chicago', 'Houston', 'Los Angeles', 'New York', 'Phoenix']
+  state: 5 unique -> ['AZ', 'CA', 'IL', 'NY', 'TX']
+  zipcode: 5 unique -> ['10001', '60601', '77001', '85001', '90001']
+
+======================================================================
+TABLE: orderitems   (1651 rows, 6 columns)
+======================================================================
+
+-- Column dtypes (pandas) --
+orderid                 int64
+orderitemid             int64
+productid               int64
+quantity                int64
+unitprice             float64
+updated_at     datetime64[us]
+
+-- Null counts --
+No nulls in any column. ✅
+
+-- Duplicate rows: 0 --
+
+-- Sample rows (first 3) --
+   orderid  orderitemid  productid  quantity  unitprice          updated_at
+0   800000            1      74900         7       40.0 2025-07-03 01:09:44
+1   800000            2      70518         9       35.0 2025-07-03 01:18:58
+2   800000            3      79133         8       27.0 2025-07-03 01:00:48
+
+-- Categorical / text column breakdown --
+No text/object columns.
+  
+======================================================================
+TABLE: orders   (300 rows, 7 columns)
+======================================================================
+
+-- Column dtypes (pandas) --
+orderid                int64
+orderdate             object
+customerid               str
+employeeid             int64
+storeid                  str
+status                   str
+updated_at    datetime64[us]
+
+-- Null counts --
+No nulls in any column. ✅
+
+-- Duplicate rows: 0 --
+
+-- Sample rows (first 3) --
+   orderid   orderdate customerid  employeeid storeid status          updated_at
+0   800061  2025-07-03      22531      509921    1506     02 2025-07-03 01:18:51
+1   800004  2025-07-03      23811      504148    1775     02 2025-07-03 01:10:11
+2   800295  2025-07-03      22981      500129    1128     01 2025-07-03 01:22:34
+
+-- Categorical / text column breakdown --
+  orderdate: 1 unique -> [datetime.date(2025, 7, 3)]
+  customerid: 91 unique values (sample: ['22531', '23811', '22981'])
+  storeid: 10 unique -> ['1069', '1128', '1305', '1308', '1321', '1462', '1506', '1775', '1794', '1887']
+  status: 3 unique -> ['01', '02', '03']
+
+======================================================================
+TABLE: products   (200 rows, 7 columns)
+======================================================================
+
+-- Column dtypes (pandas) --
+productid                 int64
+name                        str
+category                    str
+retailprice               int64
+supplierprice             int64
+supplierid                int64
+updated_at       datetime64[us]
+
+-- Null counts --
+No nulls in any column. ✅
+
+-- Duplicate rows: 0 --
+
+-- Sample rows (first 3) --
+   productid        name     category  retailprice  supplierprice  supplierid          updated_at
+0      76905  Basketball       Sports           86             82        7880 2025-06-11 22:10:24
+1      72946       Dress     Clothing           16             12        1036 2025-06-21 09:54:03
+2      76623      Tablet  Electronics           50             49        2434 2025-06-21 19:08:18
+
+-- Categorical / text column breakdown --
+  name: 40 unique values (sample: ['Basketball', 'Dress', 'Tablet'])
+  category: 8 unique -> ['Beauty', 'Books', 'Clothing', 'Electronics', 'Foods', 'Home Decor', 'Sports', 'Toys']
+
+======================================================================
+TABLE: stores   (10 rows, 9 columns)
+======================================================================
+
+-- Column dtypes (pandas) --
+storeid                  str
+storename                str
+address                  str
+city                     str
+state                    str
+zipcode                  str
+email                    str
+phone                    str
+updated_at    datetime64[us]
+
+-- Null counts --
+No nulls in any column. ✅
+
+-- Duplicate rows: 0 --
+
+-- Sample rows (first 3) --
+  storeid     storename                        address         city state zipcode                       email                phone          updated_at
+0    1305     houston44  3333 Villanueva Pike Apt. 005      Houston    TX   77001     houston44@sleekmart.com     939.693.8946x036 2025-06-30 09:33:43
+1    1794     chicago36       330 Clark River Apt. 263      Chicago    IL   60601     chicago36@sleekmart.com           5873568473 2025-06-21 05:24:28
+2    1506  losangeles51       871 Logan Mall Suite 950  Los Angeles    CA   90001  losangeles51@sleekmart.com  +1-906-437-9637x054 2025-06-22 01:04:29
+
+-- Categorical / text column breakdown --
+  storeid: 10 unique -> ['1069', '1128', '1305', '1308', '1321', '1462', '1506', '1775', '1794', '1887']
+  storename: 10 unique -> ['chicago36', 'chicago40', 'chicago72', 'chicago95', 'houston44', 'houston68', 'houston88', 'losangeles32', 'losangeles51', 'newyork67']
+  address: 10 unique -> ['0491 Lyons Ferry', '198 Julie Mills Apt. 495', '214 Diana Harbor', '25025 Andersen Extension Suite 017', '260 Mcdaniel Trail', '330 Clark River Apt. 263', '3333 Villanueva Pike Apt. 005', '639 Paula Skyway Suite 302', '8285 Sweeney Branch', '871 Logan Mall Suite 950']
+  city: 4 unique -> ['Chicago', 'Houston', 'Los Angeles', 'New York']
+  state: 4 unique -> ['CA', 'IL', 'NY', 'TX']
+  zipcode: 4 unique -> ['10001', '60601', '77001', '90001']
+  email: 10 unique -> ['chicago36@sleekmart.com', 'chicago40@sleekmart.com', 'chicago72@sleekmart.com', 'chicago95@sleekmart.com', 'houston44@sleekmart.com', 'houston68@sleekmart.com', 'houston88@sleekmart.com', 'losangeles32@sleekmart.com', 'losangeles51@sleekmart.com', 'newyork67@sleekmart.com']
+  phone: 10 unique -> ['(211)441-4251', '(621)734-5230x83953', '+1-240-568-9518', '+1-906-437-9637x054', '493.978.7338x0236', '570.717.8424x736', '5873568473', '758-340-4580', '789.384.1450', '939.693.8946x036']
+
+======================================================================
+TABLE: suppliers   (20 rows, 10 columns)
+======================================================================
+
+-- Column dtypes (pandas) --
+supplierid                int64
+suppliername                str
+contactperson               str
+email                       str
+phone                       str
+address                     str
+city                        str
+state                       str
+zipcode                     str
+updated_at       datetime64[us]
+
+-- Null counts --
+No nulls in any column. ✅
+
+-- Duplicate rows: 0 --
+
+-- Sample rows (first 3) --
+   supplierid  suppliername  contactperson                     email               phone                         address         city state zipcode          updated_at
+0        5511  Bartlett PLC   Ashley Owens  ashley_owens@outlook.com   515-242-1991x0696                74331 White Port  Los Angeles    CA   90001 2025-06-15 09:05:12
+1        5501   Scott-Ponce  Daniel Mccann     daniel_mccann@aol.com   433-611-8971x1429       334 Williams Key Apt. 878      Chicago    IL   60601 2025-06-19 19:22:37
+2        7232    Ford-Baker       Amy Lang          amy_lang@aol.com  291.452.6384x15388  0679 Brennan Meadows Suite 685  Los Angeles    CA   90001 2025-06-12 16:55:55
+
+-- Categorical / text column breakdown --
+  suppliername: 20 unique values (sample: ['Bartlett PLC', 'Scott-Ponce', 'Ford-Baker'])
+  contactperson: 20 unique values (sample: ['Ashley Owens', 'Daniel Mccann', 'Amy Lang'])
+  email: 20 unique values (sample: ['ashley_owens@outlook.com', 'daniel_mccann@aol.com', 'amy_lang@aol.com'])
+  phone: 20 unique values (sample: ['515-242-1991x0696', '433-611-8971x1429', '291.452.6384x15388'])
+  address: 20 unique values (sample: ['74331 White Port', '334 Williams Key Apt. 878', '0679 Brennan Meadows Suite 685'])
+  city: 5 unique -> ['Chicago', 'Houston', 'Los Angeles', 'New York', 'Phoenix']
+  state: 5 unique -> ['AZ', 'CA', 'IL', 'NY', 'TX']
+  zipcode: 5 unique -> ['10001', '60601', '77001', '85001', '90001']
+
+######################################################################
+# SUMMARY ACROSS ALL TABLES
+######################################################################
+     table  rows  columns  nulls_total  duplicates
+ customers   100       10            0           0
+     dates   365        8            0           0
+ employees   101       12            1           0
+orderitems  1651        6            0           0
+    orders   300        7            0           0
+  products   200        7            0           0
+    stores    10        9            0           0
+ suppliers    20       10            0           0

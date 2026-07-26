@@ -1,0 +1,137 @@
+services:
+  postgres:
+    image: postgres:13
+    environment:
+      - POSTGRES_USER=airflow
+      - POSTGRES_PASSWORD=airflow
+      - POSTGRES_DB=airflow
+    volumes:
+      - postgres-db-volume:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U airflow"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  redis:
+    image: redis:7.2-alpine
+    expose:
+      - "6379"
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+    restart: always
+
+  airflow-init:
+    build: .
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    environment:
+      - AIRFLOW__CORE__EXECUTOR=CeleryExecutor
+      - AIRFLOW__DATABASE__SQL_ALCHEMY_CONN=postgresql+psycopg2://airflow:airflow@postgres/airflow
+      - AIRFLOW__CELERY__BROKER_URL=redis://redis:6379/0
+      - AIRFLOW__CORE__LOAD_EXAMPLES=False
+    command: bash -c "airflow db migrate && airflow users create --username admin --firstname Mo --lastname Amer --role Admin --email mo.abdo.amer123@gmail.com --password admin && airflow pools set postgres_pool 5 'Postgres extraction pool'"
+
+  airflow-webserver:
+    build: .
+    command: webserver
+    ports:
+      - "8081:8080"
+    environment:
+      - AIRFLOW__CORE__EXECUTOR=CeleryExecutor
+      - AIRFLOW__DATABASE__SQL_ALCHEMY_CONN=postgresql+psycopg2://airflow:airflow@postgres/airflow
+      - AIRFLOW__CELERY__BROKER_URL=redis://redis:6379/0
+      - AIRFLOW__CORE__LOAD_EXAMPLES=False
+      - AIRFLOW__WEBSERVER__SECRET_KEY=this_is_a_very_long_and_random_secret_key_12345
+      - AIRFLOW__SMTP__SMTP_HOST=smtp.gmail.com
+      - AIRFLOW__SMTP__SMTP_STARTTLS=True
+      - AIRFLOW__SMTP__SMTP_SSL=False
+      - AIRFLOW__SMTP__SMTP_USER=mo.abdo.amer123@gmail.com
+      - AIRFLOW__SMTP__SMTP_PASSWORD=txwdgendjvocqbbn
+      - AIRFLOW__SMTP__SMTP_PORT=587
+      - AIRFLOW__SMTP__SMTP_MAIL_FROM=mo.abdo.amer123@gmail.com
+      - AIRFLOW_CONN_OMS_POSTGRES_CONN=postgresql://neondb_owner:npg_nf0Bpoz8SKtF@ep-tiny-sunset-ah3xbklk-pooler.c-3.us-east-1.aws.neon.tech/neondb?sslmode=require
+    volumes:
+      - ./dags:/opt/airflow/dags
+      - ./tests:/opt/airflow/tests
+      - ./plugins:/opt/airflow/plugins
+      - ./logs:/opt/airflow/logs
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+      airflow-init:
+        condition: service_completed_successfully
+    restart: always
+
+  airflow-scheduler:
+    build: .
+    command: scheduler
+    environment:
+      - AIRFLOW__CORE__EXECUTOR=CeleryExecutor
+      - AIRFLOW__DATABASE__SQL_ALCHEMY_CONN=postgresql+psycopg2://airflow:airflow@postgres/airflow
+      - AIRFLOW__CELERY__BROKER_URL=redis://redis:6379/0
+      - AIRFLOW__CORE__LOAD_EXAMPLES=False
+      - AIRFLOW__WEBSERVER__SECRET_KEY=this_is_a_very_long_and_random_secret_key_12345
+      - AIRFLOW__SMTP__SMTP_HOST=smtp.gmail.com
+      - AIRFLOW__SMTP__SMTP_STARTTLS=True
+      - AIRFLOW__SMTP__SMTP_SSL=False
+      - AIRFLOW__SMTP__SMTP_USER=mo.abdo.amer123@gmail.com
+      - AIRFLOW__SMTP__SMTP_PASSWORD=txwdgendjvocqbbn
+      - AIRFLOW__SMTP__SMTP_PORT=587
+      - AIRFLOW__SMTP__SMTP_MAIL_FROM=mo.abdo.amer123@gmail.com
+      - AIRFLOW_CONN_OMS_POSTGRES_CONN=postgresql://neondb_owner:npg_nf0Bpoz8SKtF@ep-tiny-sunset-ah3xbklk-pooler.c-3.us-east-1.aws.neon.tech/neondb?sslmode=require
+    volumes:
+      - ./dags:/opt/airflow/dags
+      - ./tests:/opt/airflow/tests
+      - ./plugins:/opt/airflow/plugins
+      - ./logs:/opt/airflow/logs
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+      airflow-init:
+        condition: service_completed_successfully
+    restart: always
+
+  airflow-worker:
+    build: .
+    command: celery worker
+    environment:
+      - AIRFLOW__WEBSERVER__SECRET_KEY=this_is_a_very_long_and_random_secret_key_12345
+      - AIRFLOW__CORE__EXECUTOR=CeleryExecutor
+      - AIRFLOW__DATABASE__SQL_ALCHEMY_CONN=postgresql+psycopg2://airflow:airflow@postgres/airflow
+      - AIRFLOW__CELERY__BROKER_URL=redis://redis:6379/0
+      - AIRFLOW__CORE__LOAD_EXAMPLES=False
+      - AIRFLOW_CONN_OMS_POSTGRES_CONN=postgresql://neondb_owner:npg_nf0Bpoz8SKtF@ep-tiny-sunset-ah3xbklk-pooler.c-3.us-east-1.aws.neon.tech/neondb?sslmode=require
+      - AIRFLOW__SMTP__SMTP_HOST=smtp.gmail.com
+      - AIRFLOW__SMTP__SMTP_STARTTLS=True
+      - AIRFLOW__SMTP__SMTP_SSL=False
+      - AIRFLOW__SMTP__SMTP_USER=mo.abdo.amer123@gmail.com
+      - AIRFLOW__SMTP__SMTP_PASSWORD=txwdgendjvocqbbn
+      - AIRFLOW__SMTP__SMTP_PORT=587
+      - AIRFLOW__SMTP__SMTP_MAIL_FROM=mo.abdo.amer123@gmail.com
+    volumes:
+      - ./dags:/opt/airflow/dags
+      - ./tests:/opt/airflow/tests
+      - ./plugins:/opt/airflow/plugins
+      - ./logs:/opt/airflow/logs
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+      airflow-init:
+        condition: service_completed_successfully
+    restart: always
+
+volumes:
+  postgres-db-volume:

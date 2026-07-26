@@ -1,0 +1,14 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Airflow logs and local configurations
+logs/
+airflow.cfg
+webserver_config.py
+
+# Docker and Virtual Environments
+.env
+venv/
+env/
